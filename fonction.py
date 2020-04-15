@@ -105,7 +105,7 @@ def ajout_category():
         
     
 
-def produit_substitution(id_category,nutriscore):
+def product_substitution(id_category,nutriscore):
     cnx = mysql.connector.connect(
         host="127.0.0.1",
         port=3306,
@@ -123,7 +123,14 @@ def produit_substitution(id_category,nutriscore):
         while i < maxi:
             print(i + 1 ,row[i][1])
             i += 1
-        choix_produit  =input("Veuillez entrer un nombre : ")
+        while True:
+            try:
+                choix_produit  = int(input("Veuillez entrer un nombre : "))
+                if choix_produit <= maxi  and choix_produit > 0:
+                    break
+            except ValueError:
+                print("")
+        
         choix_produit = int(choix_produit)-1
         print("produit selectionner","\n")
         print("nom:",row[int(choix_produit)][1])
@@ -136,13 +143,13 @@ def produit_substitution(id_category,nutriscore):
         nutriscore = row[int(choix_produit)][6]
         nom = row[int(choix_produit)][1]
         url = row[int(choix_produit)][5]
-        sauvegard(id_category,nutriscore,nom,url)
+        save(id_category,nutriscore,nom,url)
     else:
-        sauvegard(id_category,nutriscore)
+        save(id_category,nutriscore)
         
     
     
-def acceuil():
+def home():
     print("1 - Quel aliment souhaitez-vous remplacer ?")
     print("2 - Retrouver mes aliments substitués.")
     print("3 - recrée base")
@@ -164,7 +171,14 @@ def acceuil():
         while i < maxi:
             print(i + 1 ,row[i][1])
             i += 1
-        choix =input("Veuillez selectionné une category : ")
+        while True:
+            try:    
+                choix =int(input("Veuillez selectionné une category : "))
+                if choix <= maxi  and choix > 0:
+                    break
+            except ValueError:
+                print("")
+        
         choix = int(choix) - 1 
         req = "select * from produit where produit_id ='" + str(choix)+ "'"
         cur.execute(req)
@@ -175,7 +189,13 @@ def acceuil():
         while i < maxi:
             print(i,row_produit[i][1])
             i += 1
-        choix_produit  =input("Veuillez entrer un nombre :")
+        while True:
+            try:    
+                choix_produit  =int(input("Veuillez entrer un nombre :"))
+                if choix_produit <= maxi:
+                    break
+            except ValueError:
+                print("")
         print("produit selectionner","\n")
         print("nom:",row_produit[int(choix_produit)][1])
         print("description:",row_produit[int(choix_produit)][3])
@@ -188,7 +208,7 @@ def acceuil():
         nutriscore = row_produit[int(choix_produit)][6]
         nom = row_produit[int(choix_produit)][1]
         url = row_produit[int(choix_produit)][5]
-        sauvegard(id_category,nutriscore,nom,url)
+        save(id_category,nutriscore,nom,url)
         
  
     elif choix == '2':
@@ -209,27 +229,35 @@ def acceuil():
             while i < maxi:
                 print(i + 1 ,row[i][1],"\n")
                 i += 1
-        acceuil()
+        home()
     elif choix == '3': 
         create_data()
         create_table()
         ajout_category()
-        acceuil()
+        home()
             
     else :
         print("selectionner nombre proposez \n")
-        acceuil()
-def sauvegard(id_category,nutriscore,nom,url):
+        home()
+def save(id_category,nutriscore,nom,url):
     val_nutri = int(nutriscore)
     if (val_nutri > 0):
+        print("DANS SAVE")
         print("1 - trouver un substitue de meilleur qualité ?")
         print("2 - Sauvegarder alliment.")
         print("3 - Nouvelle recherche.")
-        choix_s  =input("Veuillez entrer un nombre : ")
+        while True:
+            try:
+                choix_s  = int(input("Veuillez entrer un nombre : "))
+                if choix_s <= 3 and choix_s > 0:
+                    break
+            except ValueError:
+                print("")
+        
 
-        if(choix_s == '1'):
-            produit_substitution( id_category,nutriscore)
-        elif(choix_s == '2'):
+        if choix_s == 1:
+            product_substitution( id_category,nutriscore)
+        elif choix_s == 2:
             cnx = mysql.connector.connect(
             host="127.0.0.1",
             port=3306,
@@ -241,9 +269,9 @@ def sauvegard(id_category,nutriscore,nom,url):
             req = str(req)
             cur.execute(req)
             cnx.close()
-            acceuil()
-        elif(choix_s == '3'):
-            acceuil()
+            home()
+        elif choix_s == 3 :
+            home()
     else:
         print("il n'existe pas mieux!")
         print("1 - Sauvegarder alliment.")
@@ -261,9 +289,9 @@ def sauvegard(id_category,nutriscore,nom,url):
             req = str(req)
             cur.execute(req)
             cnx.close()
-            acceuil()
+            home()
         else:
-            acceuil()
+            home()
 
 
 ##        payload = {}
