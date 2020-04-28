@@ -1,2 +1,8 @@
-# OpenFoodFacts
-La startup Pur Beurre travaille connait bien les habitudes alimentaires françaises. Leur restaurant, Ratatouille, remporte un succès croissant et attire toujours plus de visiteurs sur la butte de Montmartre.  L'équipe a remarqué que leurs utilisateurs voulaient bien changer leur alimentation mais ne savaient pas bien par quoi commencer. Remplacer le Nutella par une pâte aux noisettes, oui, mais laquelle ? Et dans quel magasin l'acheter ? Leur idée est donc de créer un programme qui interagirait avec la base Open Food Facts pour en récupérer les aliments, les comparer et proposer à l'utilisateur un substitut plus sain à l'aliment qui lui fait envie.
+Avant d'exécuter l'application veuillez vous assurer d'avoir tous les requirements nécessaires voir fichier requierement.txt
+Modifier les informations de connexion de la base de données si nécessaire! dans le fichier constant py
+Ip = "votre Ip" user = "nom d'utilisateur" etc.
+lancer dans un terminal la commande suivante( à l'emplacement de votre dossier):
+python pur beurre py
+Utilisez-les touche numérique afin de sélectionner votre choix!
+Pouvez-vous désormais profiter de l'application!
+Sélectionner 3 lors de la première utilisation
