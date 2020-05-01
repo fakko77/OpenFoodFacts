@@ -1,5 +1,4 @@
 import mysql.connector
-import json
 from constantes import *
 
 
@@ -9,17 +8,14 @@ class data_connect:
         self.user = user
         self.password = password
         self.db = db
-
-        conn = mysql.connector.connect(
+        self.con = mysql.connector.connect(
             host=ip,
             port=3306,
             user=user,
             password=password,
             database=db)
-        cur = conn.cursor(buffered=True)
-        self.con = conn
-        self.cur = cur
-        self.close = conn.close
+        self.cur = self.con.cursor()
+
 
     def req(self, req):
         cur = self.cur
@@ -28,4 +24,7 @@ class data_connect:
     def req_return(self):
         cur = self.cur
         return cur.fetchall()
+    def close(self):
+        con = self.con
+        return con.close()
 

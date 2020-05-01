@@ -1,6 +1,10 @@
 from fonction import *
 from classes import *
+from data_edit import *
+import ctypes
+
 main()
+    
 
 
 # SELECT COUNT(nom), nom FROM produit GROUP BY nom HAVING COUNT(nom) > 1

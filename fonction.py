@@ -1,31 +1,29 @@
 import requests
 import json
 from constantes import *
+from data_edit import *
 from classes import *
 
 
 def main():
-    try:
-        data = data_connect(ip, user, password, db)
-        home(data)
-    except:
-        create_data()
-        data = data_connect(ip, user, password, db)
-        home(data)
+    while True:
+        try:
+            data = data_connect(ip, user, password, db)
+            home(data)
+        except:
+            create_data()
+            data_init = data_connect(ip, user, password, db)
+            create_table(data_init)
+            add_entity(data_init)
+            data_init.close()
+
+
 
 
 # data = data_connect(ip, user, password, db)
-# close = data.close
+
 
 # fonction permetant de crée la base de donnée
-def create_data():
-    data_create = data_connect(ip, user, password, "")
-    data_create.req("DROP DATABASE IF EXISTS pur_beurre")
-    data_create.req("CREATE DATABASE IF NOT EXISTS pur_beurre")
-    data_create.close_conn()
-    #data_create.close
-
-
 # creation de l'objet data
 
 
@@ -34,7 +32,7 @@ def create_table(data):
     data.req(create_category)
     data.req(create_produit)
     data.req(create_favori)
-    #data.close
+
 
 
 # l'on ajoute les categories et leurs produit à l'aide de l'api dans la base de donnée
@@ -71,33 +69,30 @@ def add_entity(data):
 
                     requette = "INSERT INTO produit ( nom , produit_id, description , magasin , url_produit, " \
                                "nutri_score ) values " \
-                               "('" + nom + "','" + str(compteur_category) + "','description','" + store + "','" + str(
-                        item_produc[i]["url"]) + "','" + nutri + "')"
+                               "('" + nom + "','" + str(compteur_category) + "','descr" \
+                                                                             "iption','" + store + "','" + str(item_produc[i]["url"]) + "','" + nutri + "')"
                     data.req(requette)
 
                 else:
                     nutri = "99"
                     requette = "INSERT INTO produit ( nom , produit_id, description , magasin , url_produit, " \
-                               "nutri_score ) values ('" + nom + "','" + str(
-                        compteur_category) + "','description','" + store + "','" + str(
-                        item_produc[i]["url"]) + "','" + nutri + "')"
+                               "nutri_score ) values ('" + nom + "','" + str(compteur_category) + "','desc" \
+                                                                                                  "ription','" + store + "','" + str(item_produc[i]["url"]) + "','" + nutri + "')"
                     data.req(requette)
                 i += 1
                 # print(compteur_category)
             compteur_category += 1
             if compteur_category == 6:
-                #data.close
                 break
     # l'on supprime les doublons
     req = "DELETE produit FROM produit LEFT OUTER JOIN ( SELECT MIN(id) as id, nom FROM produit GROUP BY nom ) " \
           "AS table_1 ON produit .id = table_1.id WHERE table_1.id IS NULL"
     data.req(req)
-    #data.close
     print("Finis")
 
 
 # fonction permettant de trouver un produit de meilleurs qualité
-def product_substitution(id_category, nutriscore, data):
+def product_substitution(id_category, nutriscore, data ,nom, url):
     data.req("SELECT * from produit where produit_id = '" + str(id_category) + "'  and nutri_score < '" + str(
         nutriscore) + "' ")
     row = data.req_return()
@@ -124,15 +119,33 @@ def product_substitution(id_category, nutriscore, data):
         print("magasin:", row[int(choix_produit)][4])
         print("url:", row[int(choix_produit)][5])
         print("nutriScrore:", row[int(choix_produit)][6])
-        # data.close()
         id_category = row[int(choix_produit)][2]
         nutriscore = row[int(choix_produit)][6]
         nom = row[int(choix_produit)][1]
         url = row[int(choix_produit)][5]
         search(id_category, nutriscore, nom, url, data)
     else:
-        search(id_category, nutriscore, data)
-        # data.close()
+        print("produit selectionner", "\n")
+        print("nom:", nom)
+        print("url:", url)
+        print("nutriScrore:", nutriscore)
+        print("il n'existe pas mieux!")
+        print("1 - Sauvegarder alliment.")
+        print("2 - Nouvelle recherche.")
+        print(nom)
+
+        while True:
+            try:
+                choix_t = int(input("Veuillez entrer un nombre : "))
+                if choix_t <= 2 and choix_t > 0:
+                    break
+            except ValueError:
+                print("")
+        if choix_t == 1:
+            save(nom, id_category, url, data)
+        else:
+            home(data)
+
 
 
 def home(data):
@@ -190,21 +203,16 @@ def home(data):
         url = row_produit[int(choix_produit)][5]
         search(id_category, nutriscore, nom, url, data)
     elif choix == '2':
-        data.req("SELECT * from favori ")
-        row = data.req_return()
-        maxi = len(row)
-        i = 0
-        nb_dispo = maxi
-        print("nombre de produits correspondant :", maxi)
-        if (nb_dispo > 0):
-            while i < maxi:
-                print(i + 1, row[i][1], "\n")
-                i += 1
-        home(data)
+        facory_read(data)
+
     elif choix == '3':
+        drop_data()
         create_data()
-        create_table(data)
-        add_entity(data)
+        data_init = data_connect(ip, user, password, db)
+        create_table(data_init)
+        add_entity(data_init)
+        data_init.close()
+        data = data_connect(ip, user, password, db)
         home(data)
 
     else:
@@ -215,7 +223,7 @@ def home(data):
 # fonction permet en partie de sauvegarder les produits favoris
 def search(id_category, nutriscore, nom, url, data):
     val_nutri = int(nutriscore)
-    if (val_nutri > 1):
+    if (val_nutri > 2):
 
         print("1 - trouver un substitue de meilleur qualité ?")
         print("2 - Sauvegarder alliment.")
@@ -229,7 +237,7 @@ def search(id_category, nutriscore, nom, url, data):
                 print("")
 
         if choix_s == 1:
-            product_substitution(id_category, nutriscore, data)
+            product_substitution(id_category, nutriscore, data, nom, url)
         elif choix_s == 2:
             save(nom, id_category, url, data)
 
@@ -239,16 +247,16 @@ def search(id_category, nutriscore, nom, url, data):
         print("il n'existe pas mieux!")
         print("1 - Sauvegarder alliment.")
         print("2 - Nouvelle recherche.")
+        print(nom)
 
         while True:
             try:
-                choix_ = int(input("Veuillez entrer un nombre : "))
-                if choix_ <= 2 and choix_ > 0:
+                choix_t = int(input("Veuillez entrer un nombre : "))
+                if choix_t <= 2 and choix_t > 0:
                     break
             except ValueError:
                 print("")
-        if choix_ == '1':
-
+        if choix_t == 1:
             save(nom, id_category, url, data)
         else:
             home(data)
@@ -260,5 +268,17 @@ def save(nom, id_category, url, data):
                                     "" + str(id_category) + "','" + str(url) + "')"
 
     data.req(req)
-    #data.close
+    home(data)
+
+def facory_read(data):
+    data.req("SELECT * from favori ")
+    row = data.req_return()
+    maxi = len(row)
+    i = 0
+    nb_dispo = maxi
+    print("nombre de produits correspondant :", maxi)
+    if (nb_dispo > 0):
+        while i < maxi:
+            print(i + 1, row[i][1], "\n")
+            i += 1
     home(data)
