@@ -82,16 +82,13 @@ def add_entity(data):
     while compteur_category < 5:
         while compteur_produit < 100:
             print(compteur_category, str(dic[compteur_category].nom))
-            url = "https://fr.openfoodfacts."\
+            r = requests.get("https://fr.openfoodfacts."\
                   "org/cgi/search.pl?action=process"\
                   "&tagtype_0=categories&tag_contains_"\
                   "0=contains&tag_0=" + str(dic[compteur_category].nom) +\
-                  "&json=true&page_size=100"
-            payload = {}
-            headers = {}
-            response = requests.request("GET", url,
-                                        headers=headers, data=payload)
-            json_data = json.dumps(response.json())
+                  "&json=true&page_size=100")
+
+            json_data = json.dumps(r.json())
             item_dict = json.loads(json_data)
             item_produc = item_dict["products"]
             i = 0
