@@ -81,17 +81,21 @@ def add_entity(data):
         compteur += 1
     while compteur_category < 5:
         while compteur_produit < 100:
-            print(compteur_category, str(dic[compteur_category].nom))
-            r = requests.get("https://fr.openfoodfacts."\
-                  "org/cgi/search.pl?action=process"\
-                  "&tagtype_0=categories&tag_contains_"\
-                  "0=contains&tag_0=" + str(dic[compteur_category].nom) +\
-                  "&json=true&page_size=100")
+            try:
+                print(compteur_category, str(dic[compteur_category].nom))
+                r = requests.get("https://fr.openfoodfacts."\
+                      "org/cgi/search.pl?action=process"\
+                      "&tagtype_0=categories&tag_contains_"\
+                      "0=contains&tag_0=" + str(dic[compteur_category].nom) +\
+                      "&json=true&page_size=100")
 
-            json_data = json.dumps(r.json())
-            item_dict = json.loads(json_data)
-            item_produc = item_dict["products"]
-            i = 0
+                json_data = json.dumps(r.json())
+                item_dict = json.loads(json_data)
+                item_produc = item_dict["products"]
+                i = 0
+            except Exception as e:
+                print(e)
+                print("Erreur Api")
             while i < 100:
                 if "nutriscore_score" in item_produc[i]:
                     nutri = str(item_produc[i]["nutriscore_score"])
