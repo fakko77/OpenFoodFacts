@@ -1,9 +1,11 @@
+import json
 import mysql.connector
 import requests
-import json
-from classes import Produit, Category
+from model.category import Category
+from model.produit import Produit
 from constantes import ip, user, password, create_category,\
-                       create_produit, create_favori, delete_doublons
+    create_produit, create_favori, delete_doublons
+
 dic = {0: Category("1", "Produits à tartiner"),
        1: Category("2", "Plats préparés"),
        2: Category("3", "Céréales pour petit-déjeuner"),
@@ -36,7 +38,7 @@ def favory_read(data):
     """ read all favory in the table favori """
 
     data.req("SELECT * from favori ")
-    row = data.req_return()
+    row = data.req_return
     maxi = len(row)
     i = 0
     nb_dispo = maxi
@@ -83,11 +85,12 @@ def add_entity(data):
         while compteur_produit < 100:
             try:
                 print(compteur_category, str(dic[compteur_category].nom))
-                r = requests.get("https://fr.openfoodfacts."\
-                      "org/cgi/search.pl?action=process"\
-                      "&tagtype_0=categories&tag_contains_"\
-                      "0=contains&tag_0=" + str(dic[compteur_category].nom) +\
-                      "&json=true&page_size=100")
+                r = requests.get("https://fr.openfoodfacts."
+                                 "org/cgi/search.pl?action=process"
+                                 "&tagtype_0=categories&tag_contains_"
+                                 "0=contains&tag_0=" +
+                                 str(dic[compteur_category].nom) +
+                                 "&json=true&page_size=100")
 
                 json_data = json.dumps(r.json())
                 item_dict = json.loads(json_data)

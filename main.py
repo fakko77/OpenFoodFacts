@@ -1,5 +1,5 @@
-from databasse import create_data, create_table, add_entity
-from classes import Dataconnect, Home
+from data.databasse import create_data, create_table, add_entity
+from model.home import Dataconnect, Home
 from constantes import ip, user, password, db
 
 
