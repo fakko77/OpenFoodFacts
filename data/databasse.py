@@ -3,8 +3,8 @@ import mysql.connector
 import requests
 from model.category import Category
 from model.produit import Produit
-from constantes import ip, user, password, create_category,\
-    create_produit, create_favori, delete_doublons
+from constantes import IP, USER, PASSWORD, CREATE_CATEGORY,\
+    CREATE_PRODUIT, CREATE_FAVORY, DELETE_DOUBLONS
 
 dic = {0: Category("1", "Produits à tartiner"),
        1: Category("2", "Plats préparés"),
@@ -16,8 +16,8 @@ dic = {0: Category("1", "Produits à tartiner"),
 
 def drop_data():
     """ delete databasse """
-    cnx = mysql.connector.connect(user=user, password=password,
-                                  host=ip,
+    cnx = mysql.connector.connect(user=USER, password=PASSWORD,
+                                  host=IP,
                                   database='')
     cur = cnx.cursor()
     cur.execute("DROP DATABASE pur_beurre")
@@ -26,8 +26,8 @@ def drop_data():
 
 def create_data():
     """ create a new databasse purbeurre"""
-    cnx = mysql.connector.connect(user=user, password=password,
-                                  host=ip,
+    cnx = mysql.connector.connect(user=USER, password=PASSWORD,
+                                  host=IP,
                                   database='')
     cur = cnx.cursor()
     cur.execute("CREATE DATABASE pur_beurre")
@@ -60,9 +60,9 @@ def favory_read(data):
 
 def create_table(data):
     """ create the database produit , favori , categorie"""
-    data.req(create_category)
-    data.req(create_produit)
-    data.req(create_favori)
+    data.req(CREATE_CATEGORY)
+    data.req(CREATE_PRODUIT)
+    data.req(CREATE_FAVORY)
 
 
 def add_category(data, list):
@@ -132,5 +132,5 @@ def add_entity(data):
             if compteur_category == 6:
                 break
     # l'on supprime les doublons
-    req = delete_doublons
+    req = DELETE_DOUBLONS
     data.req(req)

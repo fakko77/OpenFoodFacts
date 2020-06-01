@@ -1,6 +1,6 @@
 from model.produit import Produit
 from data.data import Dataconnect
-from constantes import ip, user, password, db
+from constantes import IP, USER, PASSWORD, DB
 
 
 class Home:
@@ -70,16 +70,13 @@ class Home:
                     pro = list_product[choixproduit - 1]
                     value = list_product[choixproduit - 1].substitution(data,
                                                                         pro)
-                data = Dataconnect(ip, user, password, db)
                 home.start()
             elif choixs == 2:
                 pro = None
                 list_product[choixproduit - 1].save(data, pro)
-                data = Dataconnect(ip, user, password, db)
                 home.start()
             elif choixs == 3:
                 data.close()
-                data = Dataconnect(ip, user, password, db)
                 home.start()
         else:
             # TOUT MARCHE
@@ -89,11 +86,9 @@ class Home:
             choixt = home.choix(2)
             if choixt == 1:
                 list_product[choixproduit - 1].save(data)
-                data = Dataconnect(ip, user, password, db)
                 home.start()
             else:
                 data.close()
-                data = Dataconnect(ip, user, password, db)
                 home.start()
 
     def start(self):
@@ -112,7 +107,7 @@ class Home:
         elif choix == 2:
             from data.databasse import favory_read
             data.close()
-            data = Dataconnect(ip, user, password, db)
+            data = Dataconnect(IP, USER, PASSWORD, DB)
             favory_read(data)
 
         elif choix == 3:
@@ -120,7 +115,7 @@ class Home:
                 create_data, add_entity
             drop_data()
             create_data()
-            data_init = Dataconnect(ip, user, password, db)
+            data_init = Dataconnect(IP, USER, PASSWORD, DB)
             create_table(data_init)
             add_entity(data_init)
             data_init.close()
