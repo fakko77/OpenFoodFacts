@@ -4,7 +4,7 @@ import requests
 from model.category import Category
 from model.produit import Produit
 from constantes import IP, USER, PASSWORD, CREATE_CATEGORY,\
-    CREATE_PRODUIT, CREATE_FAVORY, DELETE_DOUBLONS
+    CREATE_PRODUIT, CREATE_FAVORI, DELETE_DOUBLONS
 
 dic = {0: Category("1", "Produits à tartiner"),
        1: Category("2", "Plats préparés"),
@@ -62,7 +62,7 @@ def create_table(data):
     """ create the database produit , favori , categorie"""
     data.req(CREATE_CATEGORY)
     data.req(CREATE_PRODUIT)
-    data.req(CREATE_FAVORY)
+    data.req(CREATE_FAVORI)
 
 
 def add_category(data, list):

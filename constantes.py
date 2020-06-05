@@ -13,7 +13,7 @@ CREATE_PRODUIT = "CREATE TABLE produit ( id INT PRIMARY KEY NOT NULL " \
                  " ,url_produit TEXT , nutri_score varchar(10)" \
                  " , CONSTRAINT fk_client_numero   foreign key (category_id)" \
                  " references  category (id) )"
-CREATE_FAVORY = "CREATE TABLE favori(id INT PRIMARY KEY " \
+CREATE_FAVORI = "CREATE TABLE favori(id INT PRIMARY KEY " \
                 " NOT NULL AUTO_INCREMENT" \
                 ",id_sub INT(11), id_subtitue INT(11) NUll " \
                 " ,CONSTRAINT FK_Produit " \
