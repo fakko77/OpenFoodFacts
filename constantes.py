@@ -9,7 +9,7 @@ CREATE_CATEGORY = "CREATE TABLE category(id INT PRIMARY" \
 CREATE_PRODUIT = "CREATE TABLE produit ( id INT PRIMARY KEY NOT NULL " \
                  "AUTO_INCREMENT,nom VARCHAR(100) ," \
                  " category_id INT UNSIGNED NOT NULL,description" \
-                 " TEXT, magasin VARCHAR(100)" \
+                 " TEXT, store_id VARCHAR(100)" \
                  " ,url_produit TEXT , nutri_score varchar(10)" \
                  " , CONSTRAINT fk_client_numero   foreign key (category_id)" \
                  " references  category (id) )"

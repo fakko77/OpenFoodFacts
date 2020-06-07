@@ -129,7 +129,7 @@ def add_entity(data):
 
                     requette = "INSERT INTO produit ( nom ,"\
                                " category_id, description "\
-                               ", magasin , url_produit, "\
+                               ", store_id , url_produit, "\
                                "nutri_score ) values (%s, %s, %s, %s, %s, %s)"
                     data.req(requette, produit.nom, produit.category_id,
                              produit.description, produit.magasin,
@@ -141,7 +141,7 @@ def add_entity(data):
                                       store, item_produc[i]["url"], nutri)
                     requette = "INSERT INTO produit ( nom ,"\
                                " category_id, description "\
-                               ", magasin , url_produit, "\
+                               ", store_id , url_produit, "\
                                "nutri_score ) values (%s, %s, %s, %s, %s, %s)"
                     data.req(requette, produit.nom, produit.category_id,
                              produit.description, produit.magasin,
