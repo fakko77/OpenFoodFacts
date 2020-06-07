@@ -2,6 +2,7 @@ from model.produit import Produit
 from data.data import Dataconnect
 from constantes import IP, USER, PASSWORD, DB
 
+
 class Home:
     """class home """
     def __init__(self, data):
@@ -52,7 +53,14 @@ class Home:
         choixproduit = int(choixproduit)
         print("nom:", list_product[choixproduit - 1].nom)
         print("description:", list_product[choixproduit - 1].description)
-        print("magasin:", list_product[choixproduit - 1].magasin)
+        cpt = 0
+        tab = list_product[choixproduit - 1].magasin.split(",")
+        max = len(tab)
+        print("magasin:")
+        while cpt < max:
+            store = data.getStore(tab[cpt])
+            print(store.nom)
+            cpt += 1
         print("url:", list_product[choixproduit - 1].url)
         print("nutriScrore:",
               list_product[choixproduit - 1].nutri_score)
@@ -69,16 +77,13 @@ class Home:
                     pro = list_product[choixproduit - 1]
                     value = list_product[choixproduit - 1].substitution(data,
                                                                         pro)
-                #data = Dataconnect(ip, user, password, db)
                 home.start()
             elif choixs == 2:
                 pro = None
                 list_product[choixproduit - 1].save(data, pro)
-                #data = Dataconnect(ip, user, password, db)
                 home.start()
             elif choixs == 3:
                 data.close()
-                #data = Dataconnect(ip, user, password, db)
                 home.start()
         else:
             # TOUT MARCHE
@@ -88,19 +93,15 @@ class Home:
             choixt = home.choix(2)
             if choixt == 1:
                 list_product[choixproduit - 1].save(data)
-                #data = Dataconnect(ip, user, password, db)
                 home.start()
             else:
                 data.close()
-                #data = Dataconnect(ip, user, password, db)
                 home.start()
 
     def start(self):
         """class method for lunch the home """
         data = self.data
         home = Home(data)
-        # test = data.getProduit(1)
-        # print(test.nom)
         print("1 - Quel aliment souhaitez-vous remplacer ?")
         print("2 - Retrouver mes aliments substitués.")
         print("3 - recrée base")
@@ -116,10 +117,11 @@ class Home:
 
         elif choix == 3:
             from data.databasse import create_table, drop_data,\
-                create_data, add_entity
+                create_data, add_entity, add_strore
             drop_data()
             create_data()
             data_init = Dataconnect(IP, USER, PASSWORD, DB)
             create_table(data_init)
+            add_strore(data_init)
             add_entity(data_init)
             data_init.close()

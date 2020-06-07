@@ -4,7 +4,8 @@ import requests
 from model.category import Category
 from model.produit import Produit
 from constantes import IP, USER, PASSWORD, CREATE_CATEGORY,\
-    CREATE_PRODUIT, CREATE_FAVORI, DELETE_DOUBLONS
+    CREATE_PRODUIT, CREATE_FAVORI,\
+    DELETE_DOUBLONS, CREATE_TABSTORE
 
 dic = {0: Category("1", "Produits à tartiner"),
        1: Category("2", "Plats préparés"),
@@ -63,6 +64,7 @@ def create_table(data):
     data.req(CREATE_CATEGORY)
     data.req(CREATE_PRODUIT)
     data.req(CREATE_FAVORI)
+    data.req(CREATE_TABSTORE)
 
 
 def add_category(data, list):
@@ -104,7 +106,24 @@ def add_entity(data):
                     nutri = str(item_produc[i]["nutriscore_score"])
                     nom = str(item_produc[i]["product_name"])\
                         .replace("""'""", "")
-                    store = str(item_produc[i]["stores"]).replace("""'""", "")
+                    tab = str(item_produc[i]["stores"]).split(",")
+                    tablen = len(tab)
+                    tablen = tablen
+                    cptstore = 0
+                    tabIdStore = []
+                    # print(nom)
+                    while cptstore < tablen:
+                        # print("tab len ", tablen)
+                        store = data.getStoreId(tab[cptstore].replace(
+                            " ", "-"))
+                        # print(store.nom, store.id)
+                        tabIdStore.append(store.id)
+                        # print("tab index : ",tabIdStore[cptstore])
+                        cptstore += 1
+
+                    store = str(tabIdStore)
+                    store = store.replace("[", "")
+                    store = store.replace("]", "")
                     produit = Produit(i, nom, compteur_category, "desc",
                                       store, item_produc[i]["url"], nutri)
 
@@ -134,3 +153,22 @@ def add_entity(data):
     # l'on supprime les doublons
     req = DELETE_DOUBLONS
     data.req(req)
+
+
+def add_strore(data):
+    cpt = 0
+    tab = []
+    print("loading")
+    while cpt < 100:
+        r = requests.get("https://fr.openfoodfacts.org/magasins.json")
+        json_data = json.dumps(r.json())
+        item_dict = json.loads(json_data)
+        tab.append(item_dict["tags"][cpt])
+        requette = " INSERT INTO STRORE ( nom ) values (%s)"
+        val = tab[cpt]["id"]
+        data.req(requette, val)
+        cpt += 1
+        if cpt < 100:
+            print(cpt, "%")
+        else:
+            print("finish")

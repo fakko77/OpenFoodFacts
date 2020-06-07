@@ -26,3 +26,5 @@ DELETE_DOUBLONS = "DELETE produit FROM produit " \
                   "as id, nom FROM produit GROUP BY nom ) " \
           "AS table_1 ON produit .id = table_1.id WHERE" \
                   " table_1.id IS NULL"
+CREATE_TABSTORE = "CREATE TABLE STRORE ( id INT PRIMARY KEY NOT NULL " \
+                  "AUTO_INCREMENT,nom VARCHAR(100) )"

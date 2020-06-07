@@ -60,7 +60,14 @@ class Produit:
             choix_produit = int(choix_produit)
             print("nom:", list_product[choix_produit - 1].nom)
             print("description:", list_product[choix_produit - 1].description)
-            print("magasin:", list_product[choix_produit - 1].magasin)
+            cpt = 0
+            tab = list_product[choix_produit - 1].magasin.split(",")
+            max = len(tab)
+            print("magasin:")
+            while cpt < max:
+                store = data.getStore(tab[cpt])
+                print(store.nom)
+                cpt += 1
             print("url:", list_product[choix_produit - 1].url)
             print("nutriScrore:", list_product[choix_produit - 1].nutri_score)
             print("1 - trouver un substitue de meilleur "

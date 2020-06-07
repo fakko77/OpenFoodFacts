@@ -1,5 +1,6 @@
 import mysql.connector
 from model.produit import Produit
+from model.store import Store
 
 
 class Dataconnect:
@@ -50,3 +51,27 @@ class Dataconnect:
                               row[0][2], row[0][3],
                               row[0][4], row[0][5], row[0][6])
             return product
+
+    def getStore(self, idstore):
+        if idstore == "101":
+            store = Store(101, "unknown")
+            return store
+        else:
+            cur = self.cur
+            cur.execute("SELECT * FROM `strore`"
+                        " WHERE id = '" + str(idstore) + "'")
+            row = cur.fetchall()
+            store = Store(row[0][0], row[0][1])
+            return store
+
+    def getStoreId(self, storename):
+        try:
+            cur = self.cur
+            cur.execute("SELECT * FROM `strore`"
+                        " WHERE nom = '" + str(storename) + "'")
+            row = cur.fetchall()
+            store = Store(row[0][0], row[0][1])
+            return store
+        except:
+            store = Store(101, "unknown")
+            return store
