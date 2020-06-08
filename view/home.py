@@ -90,6 +90,8 @@ class Home:
                 home.start()
             elif choixs == 3:
                 data.close()
+                data = Dataconnect(IP, USER, PASSWORD, DB)
+                home = Home(data)
                 home.start()
         else:
             # TOUT MARCHE
@@ -102,6 +104,8 @@ class Home:
                 home.start()
             else:
                 data.close()
+                data = Dataconnect(IP, USER, PASSWORD, DB)
+                home = Home(data)
                 home.start()
 
     def start(self):

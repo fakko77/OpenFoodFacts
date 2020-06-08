@@ -54,7 +54,7 @@ class Dataconnect:
 
     def getStore(self, idstore):
         """method class for retrieve a store according to id """
-        if idstore == "101":
+        if idstore == 101:
             store = Store(101, "unknown")
             return store
         else:

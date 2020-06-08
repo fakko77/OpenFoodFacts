@@ -1,5 +1,4 @@
 
-
 class Produit:
     """ class allowing to create a product """
 
@@ -88,7 +87,7 @@ class Produit:
                 list_product[choix_produit - 1].save(data, pro)
                 return 1
             else:
-                data.close()
+                # data.close()
                 return 1
         else:
             print("il n'existe pas mieux! ")
@@ -111,5 +110,5 @@ class Produit:
                 return 1
 
             else:
-                data.close()
+                # data.close()
                 return 1
