@@ -118,7 +118,7 @@ def add_entity(data):
                         store = data.getStoreId(tab[cptstore].replace(
                             " ", "-"))
                         # print(store.nom, store.id)
-                        requette = "INSERT INTO possesion (PK_PRODUIT_ID" \
+                        requette = "INSERT INTO possession (PK_PRODUIT_ID" \
                               " ,PK_STORE_ID ,PK_CATEGORY_ID ) values (%s, %s, %s)"
                         data.req(requette, i + 1, int(store.id),compteur_category)
                         # print("tab index : ",tabIdStore[cptstore])

@@ -81,7 +81,7 @@ class Dataconnect:
     def getMagasin(self,idproduit,category):
         """method class for retrieve list of store id """
         cur = self.cur
-        cur.execute("SELECT * FROM `possesion`"
+        cur.execute("SELECT * FROM `possession`"
                     " WHERE PK_PRODUIT_ID = '" + str(idproduit) +
                     "' and `PK_CATEGORY_ID` = '" + str(category) + "'  ")
         row = cur.fetchall()
