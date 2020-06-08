@@ -11,7 +11,7 @@ mysql-connector==2.2.9<br>
 requests==2.23.0
 
 Afin d'installé les requirements de facon automatique,
-vous pouvez pour cela exécuté la commande: <h6><b>pip -r requirements.txt</b> </h6>à la racine du 
+vous pouvez pour cela exécuté la commande: <h6><b>pip install -r requirements.txt</b> </h6>à la racine du 
 fichier requirements.txt <br>
 
 

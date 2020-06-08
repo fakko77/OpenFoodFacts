@@ -1,4 +1,4 @@
-from data.databasse import create_data, create_table, add_entity, add_strore
+from data.databasse import create_data, create_table, add_entity, add_store
 from view.home import Home
 from data.data import Dataconnect
 from constantes import IP, USER, PASSWORD, DB
@@ -15,9 +15,13 @@ def main():
             create_data()
             data_init = Dataconnect(IP, USER, PASSWORD, DB)
             create_table(data_init)
-            add_strore(data)
+            add_store(data)
             add_entity(data_init)
             data_init.close()
         home = Home(data)
         home.start()
+    # data = Dataconnect(IP, USER, PASSWORD, DB)
+    # # # add_entity(data)
+
+
 

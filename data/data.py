@@ -49,7 +49,7 @@ class Dataconnect:
             row = cur.fetchall()
             product = Produit(row[0][0], row[0][1],
                               row[0][2], row[0][3],
-                              row[0][4], row[0][5], row[0][6])
+                              row[0][4], row[0][5])
             return product
 
     def getStore(self, idstore):
@@ -58,7 +58,7 @@ class Dataconnect:
             return store
         else:
             cur = self.cur
-            cur.execute("SELECT * FROM `strore`"
+            cur.execute("SELECT * FROM `store`"
                         " WHERE id = '" + str(idstore) + "'")
             row = cur.fetchall()
             store = Store(row[0][0], row[0][1])
@@ -67,7 +67,7 @@ class Dataconnect:
     def getStoreId(self, storename):
         try:
             cur = self.cur
-            cur.execute("SELECT * FROM `strore`"
+            cur.execute("SELECT * FROM `store`"
                         " WHERE nom = '" + str(storename) + "'")
             row = cur.fetchall()
             store = Store(row[0][0], row[0][1])
@@ -75,3 +75,21 @@ class Dataconnect:
         except:
             store = Store(101, "unknown")
             return store
+
+    def getMagasin(self,idproduit,category):
+        cur = self.cur
+        cur.execute("SELECT * FROM `possesion`"
+                    " WHERE PK_PRODUIT_ID = '" + str(idproduit) +
+                    "' and `PK_CATEGORY_ID` = '" + str(category) + "'  ")
+        row = cur.fetchall()
+        cpt = 0
+        max = len(row)
+        tab = []
+        while cpt < max:
+            tab.append(row[cpt][1])
+            cpt += 1
+        return tab
+
+
+
+

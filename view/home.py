@@ -43,7 +43,7 @@ class Home:
             product = Produit(rowproduit[i][0],
                               rowproduit[i][1], rowproduit[i][2],
                               rowproduit[i][3], rowproduit[i][4],
-                              rowproduit[i][5], rowproduit[i][6])
+                              rowproduit[i][5])
             print(i + 1, product.nom)
             list_product.append(product)
             i += 1
@@ -53,10 +53,16 @@ class Home:
         choixproduit = int(choixproduit)
         print("nom:", list_product[choixproduit - 1].nom)
         print("description:", list_product[choixproduit - 1].description)
+        # cpt = 0
+        # tab = list_product[choixproduit - 1].magasin.split(",")
+        # max = len(tab)
         cpt = 0
-        tab = list_product[choixproduit - 1].magasin.split(",")
-        max = len(tab)
+
         print("magasin:")
+
+        tab = data.getMagasin(list_product[choixproduit - 1].id,  list_product[choixproduit - 1].category_id)
+        cpt = 0
+        max = len(tab)
         while cpt < max:
             store = data.getStore(tab[cpt])
             print(store.nom)
@@ -117,11 +123,11 @@ class Home:
 
         elif choix == 3:
             from data.databasse import create_table, drop_data,\
-                create_data, add_entity, add_strore
+                create_data, add_entity, add_store
             drop_data()
             create_data()
             data_init = Dataconnect(IP, USER, PASSWORD, DB)
             create_table(data_init)
-            add_strore(data_init)
+            add_store(data_init)
             add_entity(data_init)
             data_init.close()

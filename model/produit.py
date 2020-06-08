@@ -4,12 +4,12 @@ class Produit:
     """ class allowing to create a product """
 
     def __init__(self, id, nom, category_id,
-                 description, magasin, url, nutri_score):
+                 description, url, nutri_score):
         self.id = id
         self.nom = nom
         self.category_id = str(category_id)
         self.description = description
-        self.magasin = magasin
+        # self.magasin = magasin
         self.url = str(url)
         self.nutri_score = int(nutri_score)
 
@@ -43,7 +43,7 @@ class Produit:
             while i < maxi:
                 product = Produit(row[i][0], row[i][1],
                                   row[i][2], row[i][3],
-                                  row[i][4], row[i][5], row[i][6])
+                                  row[i][4], row[i][5])
                 print(i + 1, product.nom)
                 list_product.append(product)
                 i += 1
@@ -60,10 +60,10 @@ class Produit:
             choix_produit = int(choix_produit)
             print("nom:", list_product[choix_produit - 1].nom)
             print("description:", list_product[choix_produit - 1].description)
-            cpt = 0
-            tab = list_product[choix_produit - 1].magasin.split(",")
-            max = len(tab)
             print("magasin:")
+            tab = data.getMagasin(list_product[choix_produit - 1].id, list_product[choix_produit - 1].category_id)
+            cpt = 0
+            max = len(tab)
             while cpt < max:
                 store = data.getStore(tab[cpt])
                 print(store.nom)

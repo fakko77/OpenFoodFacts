@@ -5,7 +5,7 @@ from model.category import Category
 from model.produit import Produit
 from constantes import IP, USER, PASSWORD, CREATE_CATEGORY,\
     CREATE_PRODUIT, CREATE_FAVORI,\
-    DELETE_DOUBLONS, CREATE_TABSTORE
+    DELETE_DOUBLONS, CREATE_TABSTORE, CREATE_POSSESION 
 
 dic = {0: Category("1", "Produits à tartiner"),
        1: Category("2", "Plats préparés"),
@@ -65,6 +65,7 @@ def create_table(data):
     data.req(CREATE_PRODUIT)
     data.req(CREATE_FAVORI)
     data.req(CREATE_TABSTORE)
+    data.req(CREATE_POSSESION)
 
 
 def add_category(data, list):
@@ -117,34 +118,36 @@ def add_entity(data):
                         store = data.getStoreId(tab[cptstore].replace(
                             " ", "-"))
                         # print(store.nom, store.id)
-                        tabIdStore.append(store.id)
+                        requette = "INSERT INTO possesion (PK_PRODUIT_ID" \
+                              " ,PK_STORE_ID ,PK_CATEGORY_ID ) values (%s, %s, %s)"
+                        data.req(requette, i + 1, int(store.id),compteur_category)
                         # print("tab index : ",tabIdStore[cptstore])
                         cptstore += 1
 
-                    store = str(tabIdStore)
-                    store = store.replace("[", "")
-                    store = store.replace("]", "")
+                    # store = str(tabIdStore)
+                    # store = store.replace("[", "")
+                    # store = store.replace("]", "")
                     produit = Produit(i, nom, compteur_category, "desc",
-                                      store, item_produc[i]["url"], nutri)
+                                       item_produc[i]["url"], nutri)
 
                     requette = "INSERT INTO produit ( nom ,"\
                                " category_id, description "\
-                               ", store_id , url_produit, "\
-                               "nutri_score ) values (%s, %s, %s, %s, %s, %s)"
+                               ", url_produit, "\
+                               "nutri_score ) values (%s, %s, %s, %s, %s)"
                     data.req(requette, produit.nom, produit.category_id,
-                             produit.description, produit.magasin,
+                             produit.description,
                              produit.url, str(produit.nutri_score))
 
                 else:
                     nutri = "99"
                     produit = Produit(i, nom, compteur_category, "desc",
-                                      store, item_produc[i]["url"], nutri)
+                                       item_produc[i]["url"], nutri)
                     requette = "INSERT INTO produit ( nom ,"\
                                " category_id, description "\
-                               ", store_id , url_produit, "\
-                               "nutri_score ) values (%s, %s, %s, %s, %s, %s)"
+                               ", url_produit, "\
+                               "nutri_score ) values (%s, %s, %s, %s, %s)"
                     data.req(requette, produit.nom, produit.category_id,
-                             produit.description, produit.magasin,
+                             produit.description,
                              produit.url, str(produit.nutri_score))
                 i += 1
             compteur_category += 1
@@ -155,7 +158,7 @@ def add_entity(data):
     data.req(req)
 
 
-def add_strore(data):
+def add_store(data):
     cpt = 0
     tab = []
     print("loading")
@@ -164,7 +167,7 @@ def add_strore(data):
         json_data = json.dumps(r.json())
         item_dict = json.loads(json_data)
         tab.append(item_dict["tags"][cpt])
-        requette = " INSERT INTO STRORE ( nom ) values (%s)"
+        requette = " INSERT INTO STORE ( nom ) values (%s)"
         val = tab[cpt]["id"]
         data.req(requette, val)
         cpt += 1
