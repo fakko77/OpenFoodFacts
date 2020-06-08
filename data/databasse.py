@@ -159,6 +159,7 @@ def add_entity(data):
 
 
 def add_store(data):
+    """methode for add the name of store in the db"""
     cpt = 0
     tab = []
     print("loading")

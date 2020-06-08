@@ -53,6 +53,7 @@ class Dataconnect:
             return product
 
     def getStore(self, idstore):
+        """method class for retrieve a store according to id """
         if idstore == "101":
             store = Store(101, "unknown")
             return store
@@ -65,6 +66,7 @@ class Dataconnect:
             return store
 
     def getStoreId(self, storename):
+        """method class for retrieve a store according to name """
         try:
             cur = self.cur
             cur.execute("SELECT * FROM `store`"
@@ -77,6 +79,7 @@ class Dataconnect:
             return store
 
     def getMagasin(self,idproduit,category):
+        """method class for retrieve list of store id """
         cur = self.cur
         cur.execute("SELECT * FROM `possesion`"
                     " WHERE PK_PRODUIT_ID = '" + str(idproduit) +
