@@ -31,7 +31,7 @@ class Home:
             print(i + 1, row[i][1])
             i += 1
 
-        choix = home.choix(maxi) - 1
+        choix = home.choix(maxi)
         req = "select * from produit where category_id ='" + str(choix) + "'"
         data.req(req)
         rowproduit = data.req_return
@@ -50,9 +50,9 @@ class Home:
 
         choixproduit = home.choix(maxi)
         print("produit selectionner", "\n")
-        choixproduit = int(choixproduit)
-        print("nom:", list_product[choixproduit - 1].nom)
-        print("description:", list_product[choixproduit - 1].description)
+        choixproduit = int(choixproduit - 1)
+        print("nom:", list_product[choixproduit].nom)
+        print("description:", list_product[choixproduit].description)
         # cpt = 0
         # tab = list_product[choixproduit - 1].magasin.split(",")
         # max = len(tab)
@@ -60,18 +60,18 @@ class Home:
 
         print("magasin:")
 
-        tab = data.getMagasin(list_product[choixproduit - 1].id,  list_product[choixproduit - 1].category_id)
+        tab = data.getMagasin(list_product[choixproduit].id,  list_product[choixproduit].category_id)
         cpt = 0
         max = len(tab)
         while cpt < max:
             store = data.getStore(tab[cpt])
             print(store.nom)
             cpt += 1
-        print("url:", list_product[choixproduit - 1].url)
+        print("url:", list_product[choixproduit].url)
         print("nutriScrore:",
-              list_product[choixproduit - 1].nutri_score)
+              list_product[choixproduit].nutri_score)
 
-        if list_product[choixproduit - 1].nutri_score > 1:
+        if list_product[choixproduit].nutri_score > 1:
             print("1 - trouver un substitue de "
                   "meilleur qualité  ?")
             print("2 - Sauvegarder alliment.")
@@ -80,19 +80,22 @@ class Home:
             if choixs == 1:
                 value = 0
                 while value == 0:
-                    pro = list_product[choixproduit - 1]
-                    value = list_product[choixproduit - 1].substitution(data,
+                    pro = list_product[choixproduit]
+                    value = list_product[choixproduit].substitution(data,
                                                                         pro)
                 home.start()
             elif choixs == 2:
                 pro = None
-                list_product[choixproduit - 1].save(data, pro)
+                list_product[choixproduit].save(data, pro)
                 home.start()
             elif choixs == 3:
+                data = Dataconnect(IP, USER, PASSWORD, DB)
+                home = Home(data)
                 data.close()
                 data = Dataconnect(IP, USER, PASSWORD, DB)
                 home = Home(data)
                 home.start()
+
         else:
             # TOUT MARCHE
             print("il n'existe pas mieux! ")
@@ -100,7 +103,7 @@ class Home:
             print("2 - Nouvelle recherche.")
             choixt = home.choix(2)
             if choixt == 1:
-                list_product[choixproduit - 1].save(data)
+                list_product[choixproduit].save(data)
                 home.start()
             else:
                 data.close()

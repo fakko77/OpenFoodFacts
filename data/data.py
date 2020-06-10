@@ -54,7 +54,10 @@ class Dataconnect:
 
     def getStore(self, idstore):
         """method class for retrieve a store according to id """
-        if idstore == 101:
+        if idstore > 100:
+            store = Store(101, "unknown")
+            return store
+        elif idstore == "100":
             store = Store(101, "unknown")
             return store
         else:
@@ -82,8 +85,7 @@ class Dataconnect:
         """method class for retrieve list of store id """
         cur = self.cur
         cur.execute("SELECT * FROM `possession`"
-                    " WHERE PK_PRODUIT_ID = '" + str(idproduit) +
-                    "' and `PK_CATEGORY_ID` = '" + str(category) + "'  ")
+                    " WHERE fk_produit_id ='" + str(idproduit) + "'")
         row = cur.fetchall()
         cpt = 0
         max = len(row)

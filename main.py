@@ -2,6 +2,7 @@ from data.databasse import create_data, create_table, add_entity, add_store
 from view.home import Home
 from data.data import Dataconnect
 from constantes import IP, USER, PASSWORD, DB
+import mysql.connector
 
 
 def main():
@@ -9,9 +10,12 @@ def main():
     while True:
         try:
             data = Dataconnect(IP, USER, PASSWORD, DB)
-        except Exception as e:
+        except mysql.connector.Error as err:
+            print(err)
+            print("Error Code:", err.errno)
+            print("SQLSTATE", err.sqlstate)
+            print("Message", err.msg)
             #afficher de l'erreur precise
-            print(e)
             create_data()
             data_init = Dataconnect(IP, USER, PASSWORD, DB)
             create_table(data_init)
@@ -21,7 +25,7 @@ def main():
         home = Home(data)
         home.start()
     # data = Dataconnect(IP, USER, PASSWORD, DB)
-    # # # add_entity(data)
+    # add_entity(data)
 
 
 

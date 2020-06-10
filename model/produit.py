@@ -1,4 +1,5 @@
 
+
 class Produit:
     """ class allowing to create a product """
 
@@ -56,19 +57,19 @@ class Produit:
                     print("")
 
             print("produit selectionner", "\n")
-            choix_produit = int(choix_produit)
-            print("nom:", list_product[choix_produit - 1].nom)
-            print("description:", list_product[choix_produit - 1].description)
+            choix_produit = int(choix_produit - 1)
+            print("nom:", list_product[choix_produit].nom)
+            print("description:", list_product[choix_produit].description)
             print("magasin:")
-            tab = data.getMagasin(list_product[choix_produit - 1].id, list_product[choix_produit - 1].category_id)
+            tab = data.getMagasin(list_product[choix_produit].id, list_product[choix_produit].category_id)
             cpt = 0
             max = len(tab)
             while cpt < max:
                 store = data.getStore(tab[cpt])
                 print(store.nom)
                 cpt += 1
-            print("url:", list_product[choix_produit - 1].url)
-            print("nutriScrore:", list_product[choix_produit - 1].nutri_score)
+            print("url:", list_product[choix_produit].url)
+            print("nutriScrore:", list_product[choix_produit].nutri_score)
             print("1 - trouver un substitue de meilleur "
                   "qualité  ?")
             print("2 - Sauvegarder alliment.")
@@ -81,10 +82,10 @@ class Produit:
                 except ValueError:
                     print("")
             if choix == 1:
-                pro = list_product[choix_produit - 1]
-                list_product[choix_produit - 1].substitution(data, pro)
+                pro = list_product[choix_produit]
+                list_product[choix_produit].substitution(data, pro)
             elif choix == 2:
-                list_product[choix_produit - 1].save(data, pro)
+                list_product[choix_produit].save(data, pro)
                 return 1
             else:
                 # data.close()

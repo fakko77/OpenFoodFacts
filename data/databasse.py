@@ -5,7 +5,8 @@ from model.category import Category
 from model.produit import Produit
 from constantes import IP, USER, PASSWORD, CREATE_CATEGORY,\
     CREATE_PRODUIT, CREATE_FAVORI,\
-    DELETE_DOUBLONS, CREATE_TABSTORE, CREATE_POSSESION 
+    DELETE_DOUBLONS, CREATE_TABSTORE, CREATE_POSSESION
+import time
 
 dic = {0: Category("1", "Produits à tartiner"),
        1: Category("2", "Plats préparés"),
@@ -74,6 +75,14 @@ def add_category(data, list):
                "(nom) values (%s)"
     data.req(requette, list)
 
+# def add_category_db(data):
+#     maxi = len(dic)
+#     compteur = 0
+#     while compteur < maxi:
+#         add_category(data, str(dic[compteur].nom))
+#         compteur += 1
+#         print(str(dic[0].nom))
+
 
 def add_entity(data):
     """retrieves and adds the products to the database """
@@ -113,21 +122,12 @@ def add_entity(data):
                     cptstore = 0
                     tabIdStore = []
                     # print(nom)
-                    while cptstore < tablen:
-                        # print("tab len ", tablen)
-                        store = data.getStoreId(tab[cptstore].replace(
-                            " ", "-"))
-                        # print(store.nom, store.id)
-                        requette = "INSERT INTO possession (PK_PRODUIT_ID" \
-                              " ,PK_STORE_ID ,PK_CATEGORY_ID ) values (%s, %s, %s)"
-                        data.req(requette, i + 1, int(store.id),compteur_category)
-                        # print("tab index : ",tabIdStore[cptstore])
-                        cptstore += 1
+
 
                     # store = str(tabIdStore)
                     # store = store.replace("[", "")
                     # store = store.replace("]", "")
-                    produit = Produit(i, nom, compteur_category, "desc",
+                    produit = Produit(i, nom, compteur_category + 1, "desc",
                                        item_produc[i]["url"], nutri)
 
                     requette = "INSERT INTO produit ( nom ,"\
@@ -137,10 +137,15 @@ def add_entity(data):
                     data.req(requette, produit.nom, produit.category_id,
                              produit.description,
                              produit.url, str(produit.nutri_score))
+                    data.req("select id from produit where nom ='" + produit.nom +
+                    "' and url_produit = '" + produit.url +
+                    "' and nutri_score = '" + str(produit.nutri_score) +
+                    "'  ")
+                    row = data.req_return
 
                 else:
                     nutri = "99"
-                    produit = Produit(i, nom, compteur_category, "desc",
+                    produit = Produit(i, nom, compteur_category + 1, "desc",
                                        item_produc[i]["url"], nutri)
                     requette = "INSERT INTO produit ( nom ,"\
                                " category_id, description "\
@@ -149,6 +154,16 @@ def add_entity(data):
                     data.req(requette, produit.nom, produit.category_id,
                              produit.description,
                              produit.url, str(produit.nutri_score))
+                while cptstore < tablen:
+                    # print("tab len ", tablen)
+                    store = data.getStoreId(tab[cptstore].replace(
+                        " ", "-"))
+                    # print(store.nom, store.id)
+                    requette = "INSERT INTO possession (fk_produit_id" \
+                               " ,fk_store_id  ) values (%s, %s)"
+                    data.req(requette, row[0][0], int(store.id))
+                    # print("tab index : ",tabIdStore[cptstore])
+                    cptstore += 1
                 i += 1
             compteur_category += 1
             if compteur_category == 6:
