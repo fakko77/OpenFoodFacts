@@ -75,13 +75,18 @@ class Dataconnect:
             cur.execute("SELECT * FROM `store`"
                         " WHERE nom = '" + str(storename) + "'")
             row = cur.fetchall()
-            store = Store(row[0][0], row[0][1])
-            return store
-        except:
+            if len(row) == 0:
+                store=Store(101,"unknown")
+                return store
+            else:
+                store = Store(row[0][0], row[0][1])
+                return store
+        except mysql.connector.errors.ProgrammingError as err:
+            print(err.msg)
             store = Store(101, "unknown")
             return store
 
-    def getMagasin(self,idproduit,category):
+    def getMagasin(self, idproduit, category):
         """method class for retrieve list of store id """
         cur = self.cur
         cur.execute("SELECT * FROM `possession`"
@@ -94,7 +99,3 @@ class Dataconnect:
             tab.append(row[cpt][1])
             cpt += 1
         return tab
-
-
-
-

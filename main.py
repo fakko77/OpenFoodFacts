@@ -26,6 +26,3 @@ def main():
         home.start()
     # data = Dataconnect(IP, USER, PASSWORD, DB)
     # add_entity(data)
-
-
-
